@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-dosomething",
+  "name": "@dosomething/eslint-config",
   "version": "1.0.0",
   "description": "Shared ESLint config for DoSomething.org projects.",
   "main": "index.js",
@@ -7,5 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "David Furnes <dfurnes@dosomething.org>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "babel-eslint": "^4.0.5",
+    "eslint-plugin-react": "^3.1.0"
+  }
 }
