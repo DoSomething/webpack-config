@@ -8,8 +8,11 @@
   },
   "author": "David Furnes <dfurnes@dosomething.org>",
   "license": "MIT",
-  "dependencies": {
-    "babel-eslint": "^4.0.5",
-    "eslint-plugin-react": "^3.1.0"
+  "peerDependencies": {
+    "eslint": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^4.2.1",
+    "eslint-config-airbnb": "^6.1.0"
   }
 }
