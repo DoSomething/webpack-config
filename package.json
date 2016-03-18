@@ -11,7 +11,7 @@
   "peerDependencies": {
     "eslint": "^2.2.0"
   },
-  "devDependencies": {
+  "dependencies": {
     "eslint-plugin-react": "^4.2.1",
     "eslint-config-airbnb": "^6.1.0"
   }
