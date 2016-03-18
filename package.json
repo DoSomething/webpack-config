@@ -1,6 +1,6 @@
 {
   "name": "@dosomething/eslint-config",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Shared ESLint config for DoSomething.org projects.",
   "main": "index.js",
   "scripts": {
