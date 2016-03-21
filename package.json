@@ -1,7 +1,7 @@
 {
-  "name": "@dosomething/eslint-config",
-  "version": "1.1.1",
-  "description": "Shared ESLint config for DoSomething.org projects.",
+  "name": "@dosomething/webpack-config",
+  "version": "1.0.0",
+  "description": "Shared Webpack config for DoSomething.org projects.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,10 +9,21 @@
   "author": "David Furnes <dfurnes@dosomething.org>",
   "license": "MIT",
   "peerDependencies": {
-    "eslint": "^2.2.0"
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "eslint-plugin-react": "^4.2.1",
-    "eslint-config-airbnb": "^6.1.0"
+    "autoprefixer": "^6.3.3",
+    "babel-core": "^6.7.2",
+    "babel-loader": "^6.2.4",
+    "css-loader": "^0.23.1",
+    "css-mqpacker": "^4.0.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "lodash": "^4.6.1",
+    "node-sass": "^3.4.2",
+    "postcss-loader": "^0.8.2",
+    "sass-loader": "^3.2.0",
+    "url-loader": "^0.5.7"
   }
 }
