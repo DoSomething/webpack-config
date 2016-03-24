@@ -19,15 +19,6 @@ var config = {
         path: 'dist',
         libraryTarget: 'umd',
     },
-    externals: {
-        // Don't bundle the 'jquery' package with the library (forge.js), but
-        // instead load from `jQuery` global variable or AMD/CJS package.
-        'jquery': {
-            root: 'jQuery',
-            commonjs2: 'jquery',
-            amd: 'jquery'
-        }
-    },
     module: {
         loaders: [
             // Bundle JavaScript, and transform to ES5 using Babel.
