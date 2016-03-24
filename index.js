@@ -12,7 +12,7 @@ var fs = require('fs');
 
 var config = {
     entry: {
-      // ...  
+        // ...
     },
     output: {
         filename: '[name].js',
@@ -91,13 +91,14 @@ if(process.env.NODE_ENV === 'production') {
 var configurator = function(options) {
     var c = defaults(config, options);
 
-    // If we're running in NPM 2.x, we need to tell Webpack to check
-    // this package's `node_modules` when resolving loaders
-    var packageModules = path.join(__dirname, 'node_modules');
-    if (fs.existsSync(packageModules)) {
-        assign(config, { resolveLoader: { modulesDirectories: [packageModules] } });
-    }
-    
+    // If we're running in NPM 2.x, we need to tell Webpack to check this
+    // package's `node_modules` when resolving loaders in addition to the
+    // client's `node_modules` (which is the default behavior).
+    assign(config, { resolveLoader: { modulesDirectories: [
+        path.resolve('./node_modules'),
+        path.join(__dirname, 'node_modules')
+    ] } });
+
     return c;
 };
 
