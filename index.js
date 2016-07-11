@@ -49,7 +49,7 @@ var config = {
         // Make NODE_ENV accessible from within client scripts (for conditional dev/prod builds).
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': process.env.NODE_ENV
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
             }
         }),
 
