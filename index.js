@@ -25,7 +25,7 @@ var config = {
             { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
 
             // Bundle static assets, either hashing filename or inlining into bundle if under 8KB
-            { test: /\.(png|jpg|eot|gif|woff|svg|ttf)$/, loader: 'url?limit=8192' },
+            { test: /\.(png|jpe?g|eot|gif|woff2?|svg|ttf)$/, loader: 'url?limit=8192' },
 
             // Bundle CSS stylesheets and process with PostCSS, extract to single CSS file per bundle.
             { test: /\.css$/, loader: ExtractTextPlugin.extract('css?sourceMap!postcss') },
