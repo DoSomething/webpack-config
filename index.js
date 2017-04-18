@@ -5,6 +5,7 @@
 
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
 var defaults = require('lodash/defaultsDeep');
 var assign = require('lodash/assign');
@@ -59,6 +60,9 @@ var config = {
       
         // Optimize ordering of modules for better minification
         new webpack.optimize.OccurrenceOrderPlugin,
+
+        // Optimize Lodash references for smaller builds.
+        new LodashModuleReplacementPlugin,
 
         // Create asset manifest (allowing Laravel or other apps to get hashed asset names).
         new ManifestPlugin({
