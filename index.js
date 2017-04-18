@@ -5,6 +5,7 @@
 
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ManifestPlugin = require('webpack-manifest-plugin');
 var defaults = require('lodash/defaultsDeep');
 var assign = require('lodash/assign');
 var path = require('path');
@@ -15,7 +16,7 @@ var config = {
         // ...
     },
     output: {
-        filename: '[name].js',
+        filename: '[name]-[hash].js',
         path: 'dist',
         libraryTarget: 'umd',
     },
@@ -54,8 +55,15 @@ var config = {
         }),
 
         // Extract all stylesheets referenced in each bundle into a single CSS file.
-        new ExtractTextPlugin('[name].css'),
-        // ...
+        new ExtractTextPlugin('[name]-[hash].css'),
+      
+        // Optimize ordering of modules for better minification
+        new webpack.optimize.OccurrenceOrderPlugin,
+
+        // Create asset manifest (allowing Laravel or other apps to get hashed asset names).
+        new ManifestPlugin({
+          fileName: 'rev-manifest.json',
+        }),
     ]
 };
 
