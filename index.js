@@ -1,8 +1,8 @@
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-var ManifestPlugin = require('webpack-manifest-plugin');
-var merge = require('webpack-merge');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const merge = require('webpack-merge');
 
 // PostCSS loader w/ options.
 const postcss = {
@@ -25,7 +25,7 @@ const postcss = {
 
 // Default Webpack configuration
 // @see: https://webpack.js.org/configuration/
-var config = {
+const config = {
     entry: {
         // ...
     },
@@ -74,31 +74,39 @@ var config = {
 
     stats: {
         // Don't print noisy output for extracted CSS children.
-        children: false
+        children: false,
     },
 };
 
-if(process.env.NODE_ENV === 'production') {
-    // In production, minify our output with UglifyJS
-    config.plugins.push(
+
+// Production build settings:
+const production = {
+  plugins: [
+      // Minify produciton builds & remove logging.
       new webpack.optimize.UglifyJsPlugin({
           compress: {
               warnings: false,
               drop_console: true,
               drop_debugger: true,
-              dead_code: true
+              dead_code: true,
           }
-      })
-    )
-} else {
-    // Enable source maps when in development.
-    // @see: https://git.io/vSAY0
-    config.devtool = '#cheap-module-source-map';
-}
-
-var configurator = function(options) {
-    return merge(config, options);
+      }),
+  ],
 };
 
-module.exports = configurator;
+// Development build settings:
+const development = {
+    // Enable source maps when in development.
+    // @see: https://git.io/vSAY0
+    devtool: '#cheap-module-source-map',
+};
+
+// Export a `configure()` function for applications to
+// import & extend in their `webpack.config.js` files.
+module.exports = function(options) {
+    const isProductionBuild = process.env.NODE_ENV === 'production';
+    const environmentConfig = isProductionBuild ? production : development;
+
+    return merge(config, environmentConfig, options);
+};
 
