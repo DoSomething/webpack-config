@@ -1,8 +1,3 @@
-/**
- * This is DoSomething.org's shared Webpack config for
- * building JavaScript, SCSS, and other front-end assets.
- */
-
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
@@ -12,6 +7,27 @@ var assign = require('lodash/assign');
 var path = require('path');
 var fs = require('fs');
 
+// PostCSS loader w/ options.
+const postcss = {
+    loader: 'postcss-loader',
+    options: {
+        plugins: function() {
+            return [
+                // Automatically add vendor prefixes using Autoprefixer.
+                require('autoprefixer')({
+                    browsers: ['last 4 versions', 'Firefox ESR', 'Opera 12.1'],
+                }),
+
+                // Combine media queries using CSS-MQPacker.
+                require('css-mqpacker')()
+            ];
+        }
+    }
+
+}
+
+// Default Webpack configuration
+// @see: https://webpack.js.org/configuration/
 var config = {
     entry: {
         // ...
@@ -24,28 +40,17 @@ var config = {
     module: {
         loaders: [
             // Bundle JavaScript, and transform to ES5 using Babel.
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
+            { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] },
 
             // Bundle static assets, either hashing filename or inlining into bundle if under 8KB
-            { test: /\.(png|jpe?g|eot|gif|woff2?|svg|ttf)$/, loader: 'url?limit=8192' },
+            { test: /\.(png|jpe?g|eot|gif|woff2?|svg|ttf)$/, use: ['url-loader?limit=8192'] },
 
             // Bundle CSS stylesheets and process with PostCSS, extract to single CSS file per bundle.
-            { test: /\.css$/, loader: ExtractTextPlugin.extract('css?sourceMap!postcss') },
+            { test: /\.css$/, loader: ExtractTextPlugin.extract(['css-loader', postcss]) },
 
             // Bundle SCSS stylesheets (processed with LibSass & PostCSS), extract to single CSS file per bundle.
-            { test: /\.scss$/, loader: ExtractTextPlugin.extract('css?sourceMap!postcss!sass?sourceMap') }
+            { test: /\.scss$/, loader: ExtractTextPlugin.extract(['css-loader', postcss, 'sass-loader']) }
         ]
-    },
-    postcss: function() {
-        return [
-            // Automatically add vendor prefixes using Autoprefixer.
-            require('autoprefixer')({
-                browsers: ['last 4 versions', 'Firefox ESR', 'Opera 12.1'],
-            }),
-
-            // Combine media queries using CSS-MQPacker.
-            require('css-mqpacker')()
-        ];
     },
     plugins: [
         // Make NODE_ENV accessible from within client scripts (for conditional dev/prod builds).
@@ -57,7 +62,7 @@ var config = {
 
         // Extract all stylesheets referenced in each bundle into a single CSS file.
         new ExtractTextPlugin('[name]-[hash].css'),
-      
+
         // Optimize ordering of modules for better minification
         new webpack.optimize.OccurrenceOrderPlugin,
 
@@ -84,25 +89,16 @@ if(process.env.NODE_ENV === 'production') {
       })
     )
 } else {
-    // Enable inline source maps when in development.
-    config.devtool = '#inline-source-map';
+    // Enable source maps when in development.
+    // @see: https://git.io/vSAY0
+    config.devtool = '#cheap-module-source-map';
 
     // Instruct Webpack to watch for changes & rebuild.
     config.watch = true;
 }
 
 var configurator = function(options) {
-    var c = defaults(config, options);
-
-    // If we're running in NPM 2.x, we need to tell Webpack to check this
-    // package's `node_modules` when resolving loaders in addition to the
-    // client's `node_modules` (which is the default behavior).
-    assign(config, { resolveLoader: { modulesDirectories: [
-        path.resolve('./node_modules'),
-        path.join(__dirname, 'node_modules')
-    ] } });
-
-    return c;
+    return defaults(config, options);
 };
 
 module.exports = configurator;
