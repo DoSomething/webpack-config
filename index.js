@@ -73,7 +73,12 @@ var config = {
         new ManifestPlugin({
           fileName: 'rev-manifest.json',
         }),
-    ]
+    ],
+
+    stats: {
+        // Don't print noisy output for extracted CSS children.
+        children: false
+    },
 };
 
 if(process.env.NODE_ENV === 'production') {
