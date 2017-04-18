@@ -2,10 +2,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
-var defaults = require('lodash/defaultsDeep');
-var assign = require('lodash/assign');
-var path = require('path');
-var fs = require('fs');
+var merge = require('webpack-merge');
 
 // PostCSS loader w/ options.
 const postcss = {
@@ -46,10 +43,10 @@ var config = {
             { test: /\.(png|jpe?g|eot|gif|woff2?|svg|ttf)$/, use: ['url-loader?limit=8192'] },
 
             // Bundle CSS stylesheets and process with PostCSS, extract to single CSS file per bundle.
-            { test: /\.css$/, loader: ExtractTextPlugin.extract(['css-loader', postcss]) },
+            { test: /\.css$/, loader: ExtractTextPlugin.extract(['css-loader?sourceMap', postcss]) },
 
             // Bundle SCSS stylesheets (processed with LibSass & PostCSS), extract to single CSS file per bundle.
-            { test: /\.scss$/, loader: ExtractTextPlugin.extract(['css-loader', postcss, 'sass-loader']) }
+            { test: /\.scss$/, loader: ExtractTextPlugin.extract(['css-loader?sourceMap', postcss, 'sass-loader?sourceMap']) }
         ]
     },
     plugins: [
@@ -97,13 +94,10 @@ if(process.env.NODE_ENV === 'production') {
     // Enable source maps when in development.
     // @see: https://git.io/vSAY0
     config.devtool = '#cheap-module-source-map';
-
-    // Instruct Webpack to watch for changes & rebuild.
-    config.watch = true;
 }
 
 var configurator = function(options) {
-    return defaults(config, options);
+    return merge(config, options);
 };
 
 module.exports = configurator;
