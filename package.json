@@ -21,9 +21,11 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "lodash": "^4.6.1",
+    "lodash-webpack-plugin": "^0.11.2",
     "node-sass": "^3.4.2",
     "postcss-loader": "^0.8.2",
     "sass-loader": "^3.2.0",
-    "url-loader": "^0.5.7"
+    "url-loader": "^0.5.7",
+    "webpack-manifest-plugin": "^1.1.0"
   }
 }
