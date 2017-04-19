@@ -51,11 +51,7 @@ const config = {
     },
     plugins: [
         // Make NODE_ENV accessible from within client scripts (for conditional dev/prod builds).
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-            }
-        }),
+        new webpack.EnvironmentPlugin(['NODE_ENV']),
 
         // Extract all stylesheets referenced in each bundle into a single CSS file.
         new ExtractTextPlugin('[name]-[hash].css'),
