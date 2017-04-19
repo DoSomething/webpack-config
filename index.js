@@ -43,10 +43,10 @@ const config = {
             { test: /\.(png|jpe?g|eot|gif|woff2?|svg|ttf)$/, use: ['url-loader?limit=8192'] },
 
             // Bundle CSS stylesheets and process with PostCSS, extract to single CSS file per bundle.
-            { test: /\.css$/, loader: ExtractTextPlugin.extract(['css-loader?sourceMap', postcss]) },
+            { test: /\.css$/, use: ExtractTextPlugin.extract(['css-loader?sourceMap', postcss]) },
 
             // Bundle SCSS stylesheets (processed with LibSass & PostCSS), extract to single CSS file per bundle.
-            { test: /\.scss$/, loader: ExtractTextPlugin.extract(['css-loader?sourceMap', postcss, 'sass-loader?sourceMap']) }
+            { test: /\.scss$/, use: ExtractTextPlugin.extract(['css-loader?sourceMap', postcss, 'sass-loader?sourceMap']) }
         ]
     },
     plugins: [
