@@ -59,9 +59,6 @@ const config = {
         // Optimize ordering of modules for better minification
         new webpack.optimize.OccurrenceOrderPlugin,
 
-        // Optimize Lodash references for smaller builds.
-        new LodashModuleReplacementPlugin,
-
         // Create asset manifest (allowing Laravel or other apps to get hashed asset names).
         new ManifestPlugin({
           fileName: 'rev-manifest.json',
