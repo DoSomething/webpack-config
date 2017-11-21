@@ -7,6 +7,7 @@ const merge = require('webpack-merge');
 const postcss = {
     loader: 'postcss-loader',
     options: {
+        sourceMap: true,
         plugins: function() {
             return [
                 // Automatically add vendor prefixes using Autoprefixer.
