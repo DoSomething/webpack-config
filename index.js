@@ -63,6 +63,9 @@ const config = {
         new ManifestPlugin({
           fileName: 'rev-manifest.json',
         }),
+
+        // Enable scope hoisting for more efficient builds.
+        new webpack.optimize.ModuleConcatenationPlugin(),
     ],
 
     stats: {
@@ -75,7 +78,7 @@ const config = {
 // Production build settings:
 const production = {
   plugins: [
-      // Minify produciton builds & remove logging.
+      // Minify production builds & remove logging.
       new webpack.optimize.UglifyJsPlugin({
           compress: {
               warnings: false,
