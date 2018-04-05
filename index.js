@@ -1,6 +1,7 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const merge = require('webpack-merge');
 
 // PostCSS loader w/ options.
@@ -25,17 +26,18 @@ const postcss = {
 
 // Default Webpack configuration
 // @see: https://webpack.js.org/configuration/
-const config = {
+const baseConfig = {
     entry: {
         // ...
     },
+
     output: {
         filename: '[name]-[hash].js',
         path: 'dist',
-        libraryTarget: 'umd',
     },
+
     module: {
-        loaders: [
+        rules: [
             // Bundle JavaScript, and transform to ES5 using Babel.
             { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] },
 
@@ -43,30 +45,26 @@ const config = {
             { test: /\.(png|jpe?g|eot|gif|woff2?|svg|ttf)$/, use: ['url-loader?limit=8192'] },
 
             // Bundle CSS stylesheets and process with PostCSS, extract to single CSS file per bundle.
-            { test: /\.css$/, use: ExtractTextPlugin.extract(['css-loader?minimize&sourceMap', postcss]) },
+            { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader?minimize&sourceMap', postcss] },
 
             // Bundle SCSS stylesheets (processed with LibSass & PostCSS), extract to single CSS file per bundle.
-            { test: /\.scss$/, use: ExtractTextPlugin.extract(['css-loader?minimize&sourceMap', postcss, 'sass-loader?sourceMap']) }
+            { test: /\.scss$/, use: [MiniCssExtractPlugin.loader, 'css-loader?minimize&sourceMap', postcss, 'sass-loader?sourceMap'] }
         ]
     },
+
     plugins: [
-        // Make NODE_ENV accessible from within client scripts (for conditional dev/prod builds).
-        new webpack.EnvironmentPlugin(['NODE_ENV']),
-
         // Extract all stylesheets referenced in each bundle into a single CSS file.
-        new ExtractTextPlugin('[name]-[hash].css'),
-
-        // Optimize ordering of modules for better minification
-        new webpack.optimize.OccurrenceOrderPlugin,
-
-        // Create asset manifest (allowing Laravel or other apps to get hashed asset names).
-        new ManifestPlugin({
-          fileName: 'rev-manifest.json',
+        new MiniCssExtractPlugin({
+          filename: "[name]-[hash].css",
+          chunkFilename: "[id].css"
         }),
 
-        // Enable scope hoisting for more efficient builds.
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        // Create asset manifest (allowing Laravel or other apps to get hashed asset names).
+        new WebpackAssetsManifest({
+          output: 'rev-manifest.json',
+        }),
     ],
+
 
     stats: {
         // Don't print noisy output for extracted CSS children.
@@ -74,35 +72,48 @@ const config = {
     },
 };
 
-
-// Production build settings:
-const production = {
-  plugins: [
-      // Minify production builds & remove logging.
-      new webpack.optimize.UglifyJsPlugin({
-          compress: {
-              warnings: false,
-              drop_console: true,
-              drop_debugger: true,
-              dead_code: true,
-          }
-      }),
-  ],
+// Options that should only be applied in development builds:
+const developmentConfig = {
+  // Set common development options. <goo.gl/3h6o6p>
+  mode: 'development',
+  
+  // Enable source maps for development (inline, with faster rebuilds).
+  devtool: 'cheap-module-source-map',
 };
 
-// Development build settings:
-const development = {
-    // Enable source maps when in development.
-    // @see: https://git.io/vSAY0
-    devtool: '#cheap-module-source-map',
+// Options that should only be applied in production builds:
+const productionConfig = {
+  // Set common production options. <goo.gl/nYfBtH>
+  mode: 'production',
+
+  // Enable source maps for production (in a separate file, so they
+  // will only load if the user has dev tools open).
+  devtool: 'source-map',
 };
 
 // Export a `configure()` function for applications to
 // import & extend in their `webpack.config.js` files.
-module.exports = function(options) {
-    const isProductionBuild = process.env.NODE_ENV === 'production';
-    const environmentConfig = isProductionBuild ? production : development;
+module.exports = options => env => {
+  const isProduction = env === 'production';
+  const environmentConfig = isProduction ? productionConfig : developmentConfig;
+  
+  // Merge our base config, environment overrides, and per-app overrides.
+  const config = merge(baseConfig, environmentConfig, options);
 
-    return merge(config, environmentConfig, options);
+  // Apply any final options based on the merged config.
+  const extraConfig = {
+    plugins: [
+      // Set NODE_ENV based on the provided Webpack environment.
+      new webpack.DefinePlugin({
+        NODE_ENV: JSON.stringify(isProduction ? 'production' : 'development'),
+      }),
+      // Clean the output path before builds.
+      new CleanWebpackPlugin([config.output.path], {
+        root: process.cwd(),
+      }),
+    ],
+  };
+
+  return merge(config, extraConfig);
 };
 
