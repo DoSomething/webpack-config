@@ -6,7 +6,7 @@ This is our shared [Webpack](http://webpack.github.io) config used for front-end
 Install this package and Webpack via NPM: 
 
 ```
-npm install webpack webpack-dev-server @dosomething/webpack-config --save-dev
+npm install webpack @dosomething/webpack-config --save-dev
 ```
 
 Add some scripts to your `package.json`:
@@ -15,9 +15,9 @@ Add some scripts to your `package.json`:
 {
   // ...
   "scripts": {
-    "start": "NODE_ENV=development webpack --watch",
-    "build:dev": "NODE_ENV=development webpack",
-    "build": "NODE_ENV=production webpack",
+    "start": "webpack --env=development --hide-modules --watch",
+    "build:dev": "webpack --env=development --hide-modules",
+    "build": "webpack --env=production",
   }
 }
 ```
