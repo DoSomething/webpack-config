@@ -13,7 +13,7 @@ const postcss = {
             return [
                 // Automatically add vendor prefixes using Autoprefixer.
                 require('autoprefixer')({
-                    browsers: ['last 4 versions', 'Firefox ESR', 'Opera 12.1'],
+                    browsers: ['last 2 versions', 'Firefox ESR', 'not dead'],
                 }),
 
                 // Combine media queries using CSS-MQPacker.
