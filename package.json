@@ -1,6 +1,6 @@
 {
   "name": "@dosomething/webpack-config",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Shared Webpack config for DoSomething.org projects.",
   "engines": {
     "node": ">= 6.0.0",
