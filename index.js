@@ -32,7 +32,7 @@ const baseConfig = {
     },
 
     output: {
-        filename: '[name]-[hash].js',
+        filename: '[name]-[chunkhash].js',
         path: 'dist',
     },
 
@@ -55,7 +55,7 @@ const baseConfig = {
     plugins: [
         // Extract all stylesheets referenced in each bundle into a single CSS file.
         new MiniCssExtractPlugin({
-          filename: "[name]-[hash].css",
+          filename: "[name]-[chunkhash].css",
           chunkFilename: "[id].css"
         }),
 
