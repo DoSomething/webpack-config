@@ -108,9 +108,7 @@ module.exports = options => env => {
         NODE_ENV: JSON.stringify(isProduction ? 'production' : 'development'),
       }),
       // Clean the output path before builds.
-      new CleanWebpackPlugin([config.output.path], {
-        root: process.cwd(),
-      }),
+      new CleanWebpackPlugin(),
     ],
   };
 
