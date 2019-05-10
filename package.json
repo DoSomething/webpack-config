@@ -12,8 +12,10 @@
   },
   "author": "David Furnes <dfurnes@dosomething.org>",
   "license": "MIT",
+  "peerDependencies": {
+    "@babel/core": "^7.4.4"
+  },
   "dependencies": {
-    "@babel/core": "^7.4.4",
     "autoprefixer": "^9.5.1",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^2.0.2",
