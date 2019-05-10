@@ -45,10 +45,10 @@ const baseConfig = {
             { test: /\.(png|jpe?g|eot|gif|woff2?|svg|ttf)$/, use: ['url-loader?limit=8192'] },
 
             // Bundle CSS stylesheets and process with PostCSS, extract to single CSS file per bundle.
-            { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader?minimize&sourceMap', postcss] },
+            { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader?sourceMap', postcss] },
 
             // Bundle SCSS stylesheets (processed with LibSass & PostCSS), extract to single CSS file per bundle.
-            { test: /\.scss$/, use: [MiniCssExtractPlugin.loader, 'css-loader?minimize&sourceMap', postcss, 'sass-loader?sourceMap'] }
+            { test: /\.scss$/, use: [MiniCssExtractPlugin.loader, 'css-loader?sourceMap', postcss, 'sass-loader?sourceMap'] }
         ]
     },
 
@@ -108,9 +108,7 @@ module.exports = options => env => {
         NODE_ENV: JSON.stringify(isProduction ? 'production' : 'development'),
       }),
       // Clean the output path before builds.
-      new CleanWebpackPlugin([config.output.path], {
-        root: process.cwd(),
-      }),
+      new CleanWebpackPlugin(),
     ],
   };
 
