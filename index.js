@@ -12,12 +12,10 @@ const postcss = {
         plugins: function() {
             return [
                 // Automatically add vendor prefixes using Autoprefixer.
-                require('autoprefixer')({
-                    browsers: ['last 2 versions', 'Firefox ESR', 'not dead'],
-                }),
+                require('autoprefixer')(),
 
                 // Combine media queries using CSS-MQPacker.
-                require('css-mqpacker')()
+                require('css-mqpacker')(),
             ];
         }
     }
