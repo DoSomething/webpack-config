@@ -1,6 +1,6 @@
 # webpack-config
 
-This is our shared [Webpack](http://webpack.github.io) config used for front-end projects at DoSomething.org. It compiles JavaScript with [Babel](https://babeljs.io), SCSS with [LibSass](http://sass-lang.com/libsass), and CSS with [Autoprefixer](https://github.com/postcss/autoprefixer) and [CSS-MQPacker](https://github.com/hail2u/node-css-mqpacker). It is also configured to add hashes to filenames for easy caching, and inlines images and fonts as Data URIs if small enough.
+This is our shared [Webpack](http://webpack.github.io) config used for front-end projects at DoSomething.org. It compiles JavaScript with [Babel](https://babeljs.io), SCSS with [LibSass](http://sass-lang.com/libsass), and CSS with [Autoprefixer](https://github.com/postcss/autoprefixer). It is also configured to add hashes to filenames for easy caching, and inlines images and fonts as Data URIs if small enough.
 
 ### Getting Started
 Install this package and Webpack via NPM: 
