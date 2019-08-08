@@ -13,9 +13,6 @@ const postcss = {
             return [
                 // Automatically add vendor prefixes using Autoprefixer.
                 require('autoprefixer')(),
-
-                // Combine media queries using CSS-MQPacker.
-                require('css-mqpacker')(),
             ];
         }
     }
