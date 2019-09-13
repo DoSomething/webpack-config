@@ -26,6 +26,8 @@ Add some scripts to your `package.json`:
 Create a `webpack.config.js` in your project directory, and set it up like so:
 
 ```js
+// webpack.config.js
+
 var webpack = require('webpack');
 var configure = require('@dosomething/webpack-config');
 
@@ -41,16 +43,18 @@ module.exports = configure({
 });
 ```
 
-If using [PostCSS](https://postcss.org/) to post-process your stylesheets you will need to create a `postcss.config.js` in your project directory.
-
-For example, to post-process your CSS with TailwindCSS and Autoprefixer, use the following configuration in your project's `postcss.config.js`:
+This package uses [PostCSS](https://postcss.org/) to post-process your stylesheets, so you will need to create a `postcss.config.js` in your project directory:
 
 ```js
+// postcss.config.js
+
 module.exports = {
   sourceMap: true,
   plugins: [require('tailwindcss'), require('autoprefixer')],
 };
 ```
+
+For example, the above configuration post-processes your CSS with TailwindCSS and Autoprefixer.
 
 Now you can run `npm start` to build with source maps and watch for changes, and `npm run build` to build optimized assets for production! If you need to further customize your build, you can pass any overrides in to the configure function.
 
